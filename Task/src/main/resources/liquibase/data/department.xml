@@ -1,0 +1,75 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
+
+    <!-- Создание таблицы DEPARTMENT -->
+    <changeSet author="KorniienkoD" id="department_1">
+        <createTable tableName="DEPARTMENT">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="NAME" type="VARCHAR2(100 BYTE)"/>
+            <column name="HEAD_OF_DEPARTMENT" type="VARCHAR2(100 BYTE)"/>
+        </createTable>
+        <rollback>
+            <dropTable tableName="DEPARTMENT"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet author="KorniienkoD" id="department_2">
+        <addPrimaryKey tableName="DEPARTMENT" columnNames="ID" constraintName="PK_DEPARTMENT"/>
+        <rollback>
+            <dropPrimaryKey tableName="DEPARTMENT" constraintName="PK_DEPARTMENT"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet author="KorniienkoD" id="department_3">
+        <createSequence sequenceName="DEPARTMENT_SEQ"/>
+        <rollback>
+            <dropSequence sequenceName="DEPARTMENT_SEQ"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet author="KorniienkoD" id="insert_departments_1">
+        <insert tableName="DEPARTMENT">
+            <column name="ID" value="1"/>
+            <column name="NAME" value="Computer Science"/>
+            <column name="HEAD_OF_DEPARTMENT" value="Dr. Smith"/>
+        </insert>
+
+        <rollback>
+            <delete tableName="DEPARTMENT">
+                <where>ID='1'</where>
+            </delete>
+        </rollback>
+    </changeSet>
+    <changeSet author="KorniienkoD" id="insert_departments_2">
+
+        <insert tableName="DEPARTMENT">
+            <column name="ID" value="2"/>
+            <column name="NAME" value="Mathematics"/>
+            <column name="HEAD_OF_DEPARTMENT" value="Dr. Johnson"/>
+        </insert>
+
+        <rollback>
+            <delete tableName="DEPARTMENT">
+                <where>ID='2'</where>
+            </delete>
+        </rollback>
+    </changeSet>
+    <changeSet author="KorniienkoD" id="insert_departments_3">
+
+        <insert tableName="DEPARTMENT">
+            <column name="ID" value="3"/>
+            <column name="NAME" value="Physics"/>
+            <column name="HEAD_OF_DEPARTMENT" value="Dr. Brown"/>
+        </insert>
+
+        <rollback>
+            <delete tableName="DEPARTMENT">
+                <where>ID='3'</where>
+            </delete>
+        </rollback>
+    </changeSet>
+</databaseChangeLog>

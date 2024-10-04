@@ -1,0 +1,82 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
+
+    <changeSet author="KorniienkoD" id="department_lector_link">
+        <createTable tableName="DEPARTMENT_LECTOR">
+            <column name="DEPARTMENT_ID" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="LECTOR_ID" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <rollback>
+            <dropTable tableName="DEPARTMENT_LECTOR"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet author="KorniienkoD" id="fk_department_lector">
+        <addForeignKeyConstraint baseTableName="DEPARTMENT_LECTOR" baseColumnNames="DEPARTMENT_ID"
+                                 constraintName="FK_DEPARTMENT2LECTOR" referencedTableName="DEPARTMENT"
+                                 referencedColumnNames="ID"/>
+        <addForeignKeyConstraint baseTableName="DEPARTMENT_LECTOR" baseColumnNames="LECTOR_ID"
+                                 constraintName="FK_LECTOR2DEPARTMENT" referencedTableName="LECTOR"
+                                 referencedColumnNames="ID"/>
+    </changeSet>
+
+
+    <changeSet author="KorniienkoD" id="insert_department_lector_link_1">
+        <insert tableName="DEPARTMENT_LECTOR">
+            <column name="DEPARTMENT_ID" value="1"/>
+            <column name="LECTOR_ID" value="1"/>
+        </insert>
+
+        <rollback>
+            <delete tableName="DEPARTMENT_LECTOR">
+                <where>DEPARTMENT_ID='1' AND LECTOR_ID='1'</where>
+            </delete>
+        </rollback>
+    </changeSet>
+
+    <changeSet author="KorniienkoD" id="insert_department_lector_link_2">
+        <insert tableName="DEPARTMENT_LECTOR">
+            <column name="DEPARTMENT_ID" value="2"/>
+            <column name="LECTOR_ID" value="3"/>
+        </insert>
+
+        <rollback>
+            <delete tableName="DEPARTMENT_LECTOR">
+                <where>DEPARTMENT_ID='2' AND LECTOR_ID='3'</where>
+            </delete>
+        </rollback>
+    </changeSet>
+
+    <changeSet author="KorniienkoD" id="insert_department_lector_link_3">
+        <insert tableName="DEPARTMENT_LECTOR">
+            <column name="DEPARTMENT_ID" value="3"/>
+            <column name="LECTOR_ID" value="2"/>
+        </insert>
+
+        <rollback>
+            <delete tableName="DEPARTMENT_LECTOR">
+                <where>DEPARTMENT_ID='3' AND LECTOR_ID='2'</where>
+            </delete>
+        </rollback>
+    </changeSet>
+
+    <changeSet author="KorniienkoD" id="insert_department_lector_link_4">
+        <insert tableName="DEPARTMENT_LECTOR">
+            <column name="DEPARTMENT_ID" value="1"/>
+            <column name="LECTOR_ID" value="4"/>
+        </insert>
+
+        <rollback>
+            <delete tableName="DEPARTMENT_LECTOR">
+                <where>DEPARTMENT_ID='1' AND LECTOR_ID='4'</where>
+            </delete>
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>
