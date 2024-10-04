@@ -14,7 +14,7 @@ public class Lector extends AbstractObject{
 
     public String fullName;
 
-    public int salary;
+    public double salary;
 
     public List<Department> departments = new ArrayList<>();
 }

@@ -14,9 +14,7 @@ public interface LectorConnector extends JpaRepository<LectorDTO, Long> {
     List<LectorDTO> getByDepartmentsName(String name);
     int countByDepartmentsName(String name);
 
-    @Query("SELECT l.fullName FROM LECTOR l WHERE LOWER(l.fullName) LIKE LOWER(CONCAT('%', :searchTerm, '%')) " +
-            "UNION " +
-            "SELECT l.degree FROM LECTOR l WHERE LOWER(l.degree) LIKE LOWER(CONCAT('%', :searchTerm, '%'))")
+    @Query("SELECT l.fullName FROM LECTOR l WHERE LOWER(l.fullName) LIKE LOWER(CONCAT('%', :searchTerm, '%')) or LOWER(l.degree) LIKE LOWER(CONCAT('%', :searchTerm, '%'))")
     List<String> searchByAllStringFields(@Param("searchTerm") String searchTerm);
 
 }

@@ -12,7 +12,7 @@ public class Department extends AbstractObject {
 
     public String name;
 
-    public String headOfDepartment;
+    public Lector headOfDepartment;
 
     public List<Lector> lectors = new ArrayList<>();
 }

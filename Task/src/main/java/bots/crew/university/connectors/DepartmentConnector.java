@@ -13,9 +13,7 @@ public interface DepartmentConnector extends JpaRepository<DepartmentDTO, Long> 
 
     DepartmentDTO getByName(String name);
 
-    @Query("SELECT d.name FROM DEPARTMENT d WHERE LOWER(d.name) LIKE LOWER(CONCAT('%', :searchTerm, '%')) " +
-            "UNION " +
-            "SELECT d.headOfDepartment FROM DEPARTMENT d WHERE LOWER(d.headOfDepartment) LIKE LOWER(CONCAT('%', :searchTerm, '%'))")
+    @Query("SELECT d.name FROM DEPARTMENT d WHERE LOWER(d.name) LIKE LOWER(CONCAT('%', :searchTerm, '%'))")
     List<String> searchByAllStringFields(@Param("searchTerm") String searchTerm);
 
 }

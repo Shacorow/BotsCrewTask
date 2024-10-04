@@ -27,7 +27,7 @@ public class LectorDTO {
     private String fullName;
 
     @Column(name = "SALARY")
-    private int salary;
+    private double salary;
 
     @ManyToMany
     @JoinTable(

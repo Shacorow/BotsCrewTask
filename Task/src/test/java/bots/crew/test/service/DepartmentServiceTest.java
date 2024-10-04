@@ -7,6 +7,7 @@ import bots.crew.university.bom.Lector;
 import bots.crew.university.bom.StatisticDepartment;
 import bots.crew.university.connectors.DepartmentConnector;
 import bots.crew.university.convertors.DepartmentConvertor;
+import bots.crew.university.convertors.LectorConvertor;
 import bots.crew.university.dto.DepartmentDTO;
 import bots.crew.university.dto.LectorDTO;
 import bots.crew.university.services.DepartmentService;
@@ -25,33 +26,43 @@ import static org.mockito.Mockito.when;
 public class DepartmentServiceTest extends UniversityUnitTest {
 
     @InjectMocks
+    @Spy
     private DepartmentService departmentService;
 
     @Mock
     private DepartmentConnector departmentConnector;
+
     @Mock
     private LectorService lectorService;
 
     @Spy
     private DepartmentConvertor departmentConvertor;
 
+    @Spy
+    private LectorConvertor lectorConvertor;
+
+
     @Test
     public void shouldCreateDepartment() {
         Department department = new Department();
         department.setName("Mathematics");
-        department.setHeadOfDepartment("John Smith");
-        DepartmentDTO departmentDTO = createDepartment(1L, "Mathematics", "John Smith");
+        Lector headOfDepartment = createLector(1L, "John Smith", Degree.ASSISTANT, 1000);
+        department.setHeadOfDepartment(headOfDepartment);
+        LectorDTO lectorDTO = createLectorDTO(1L, "John Smith", Degree.ASSISTANT, 1000);
+
+        DepartmentDTO departmentDTO = createDepartment(1L, "Mathematics", lectorDTO);
 
         when(departmentConnector.save(any())).thenReturn(departmentDTO);
         Department result = departmentService.create(department);
         assertEquals(1L, result.getId());
         assertEquals(department.getName(), result.getName());
-        assertEquals(department.getHeadOfDepartment(), result.getHeadOfDepartment());
+        assertEquals(department.getHeadOfDepartment().getId(), result.getHeadOfDepartment().getId());
     }
 
     @Test
     public void shouldGetHeadOfDepartment() {
-        DepartmentDTO departmentDTO = createDepartment(1L, "Mathematics", "John Smith");
+        LectorDTO lectorDTO = createLectorDTO(1L, "John Smith", Degree.ASSISTANT, 1000);
+        DepartmentDTO departmentDTO = createDepartment(1L, "Mathematics", lectorDTO);
 
         when(departmentConnector.getByName("Mathematics")).thenReturn(departmentDTO);
         String result = departmentService.getHeadOfDepartment("Mathematics");
@@ -79,6 +90,9 @@ public class DepartmentServiceTest extends UniversityUnitTest {
         Lector lectorThird = createLector(3L, "Jordan Smith", Degree.ASSOCIATE_PROFESSOR, 2362);
         List<Lector> lectorDTOList = List.of(lectorFirst, lectorSecond, lectorThird);
         when(lectorService.findByDepartmentName("Mathematics")).thenReturn(lectorDTOList);
+        LectorDTO headOfDepartment = createLectorDTO(1L, "John Smith", Degree.ASSISTANT, 1000);
+        DepartmentDTO departmentDTO = createDepartment(1L, "Mathematics", headOfDepartment);
+        when(departmentConnector.getByName("Mathematics")).thenReturn(departmentDTO);
         double result = departmentService.getAverageSalary("Mathematics");
         assertEquals(2454, result);
     }
@@ -100,7 +114,16 @@ public class DepartmentServiceTest extends UniversityUnitTest {
         return lector;
     }
 
-    public DepartmentDTO createDepartment(Long id, String name, String headOfDepartment) {
+    public LectorDTO createLectorDTO(Long id, String fullName, Degree degree, int salary) {
+        LectorDTO lectorDTO = new LectorDTO();
+        lectorDTO.setId(id);
+        lectorDTO.setFullName(fullName);
+        lectorDTO.setDegree(degree.name());
+        lectorDTO.setSalary(salary);
+        return lectorDTO;
+    }
+
+    public DepartmentDTO createDepartment(Long id, String name, LectorDTO headOfDepartment) {
         DepartmentDTO department = new DepartmentDTO();
         department.setHeadOfDepartment(headOfDepartment);
         department.setName(name);

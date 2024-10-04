@@ -3,14 +3,13 @@
                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
 
-    <!-- Создание таблицы DEPARTMENT -->
     <changeSet author="KorniienkoD" id="department_1">
         <createTable tableName="DEPARTMENT">
             <column name="ID" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
             <column name="NAME" type="VARCHAR2(100 BYTE)"/>
-            <column name="HEAD_OF_DEPARTMENT" type="VARCHAR2(100 BYTE)"/>
+            <column name="DEPARTMENT_ID" type="BIGINT"/>
         </createTable>
         <rollback>
             <dropTable tableName="DEPARTMENT"/>
@@ -35,7 +34,7 @@
         <insert tableName="DEPARTMENT">
             <column name="ID" value="1"/>
             <column name="NAME" value="Computer Science"/>
-            <column name="HEAD_OF_DEPARTMENT" value="Dr. Smith"/>
+            <column name="DEPARTMENT_ID" value="1"/>
         </insert>
 
         <rollback>
@@ -49,7 +48,7 @@
         <insert tableName="DEPARTMENT">
             <column name="ID" value="2"/>
             <column name="NAME" value="Mathematics"/>
-            <column name="HEAD_OF_DEPARTMENT" value="Dr. Johnson"/>
+            <column name="DEPARTMENT_ID" value="2"/>
         </insert>
 
         <rollback>
@@ -63,7 +62,7 @@
         <insert tableName="DEPARTMENT">
             <column name="ID" value="3"/>
             <column name="NAME" value="Physics"/>
-            <column name="HEAD_OF_DEPARTMENT" value="Dr. Brown"/>
+            <column name="DEPARTMENT_ID" value="3"/>
         </insert>
 
         <rollback>

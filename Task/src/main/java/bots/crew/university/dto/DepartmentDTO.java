@@ -23,8 +23,9 @@ public class DepartmentDTO {
     @Column(name = "NAME")
     private String name;
 
-    @Column(name = "HEAD_OF_DEPARTMENT")
-    private String headOfDepartment;
+    @OneToOne
+    @JoinColumn(name = "DEPARTMENT_ID")
+    private LectorDTO headOfDepartment;
 
     @ManyToMany(mappedBy = "departments")
     private List<LectorDTO> lectors = new ArrayList<>();

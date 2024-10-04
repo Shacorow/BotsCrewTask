@@ -7,10 +7,12 @@ import bots.crew.university.bom.StatisticDepartment;
 import bots.crew.university.connectors.DepartmentConnector;
 import bots.crew.university.convertors.DepartmentConvertor;
 import bots.crew.university.dto.DepartmentDTO;
+import bots.crew.university.dto.LectorDTO;
 import bots.crew.university.exception.DepartmentNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -38,7 +40,7 @@ public class DepartmentService {
         }
         Department department = new Department();
         departmentConvertor.fromDTO(departmentDTO, department);
-        return department.getHeadOfDepartment();
+        return department.getHeadOfDepartment().getFullName();
     }
 
     public StatisticDepartment getStatistic(String name) {
@@ -58,11 +60,23 @@ public class DepartmentService {
 
     public double getAverageSalary(String name) {
         List<Lector> lectors = lectorService.findByDepartmentName(name);
-        int sum = 0;
+        DepartmentDTO departmentDTO = departmentConnector.getByName(name);
+        if(departmentDTO == null){
+            departmentDTO = new DepartmentDTO();
+        }
+        LectorDTO headOfDepartment = departmentDTO.getHeadOfDepartment();
+        double sum = 0;
+        List<Long> salaryWrited = new ArrayList<>();
         for (Lector lector : lectors) {
             sum += lector.getSalary();
+            salaryWrited.add(lector.getId());
         }
-        return (double) sum / lectors.size();
+        if (headOfDepartment != null && salaryWrited.contains(headOfDepartment.getId())) {
+            return sum / lectors.size();
+        } else {
+            sum += headOfDepartment.getSalary();
+            return sum / lectors.size() + 1;
+        }
     }
 
     public List<String> globalSearch(String searchTerm) {
